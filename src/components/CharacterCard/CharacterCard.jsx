@@ -11,14 +11,15 @@ const CharacterCard = ({ character, isFavorite, onToggleFavorite }) => {
 
   return (
     <div className="character-card">
-      {isImageAvailable ? (
-        <img src={imageUrl} alt={character.name} className="character-image" />
-      ) : (
-        <div className="character-image-placeholder">
-          <span>?</span>
-        </div>
-      )}
-
+      <div className="character-image-wrapper">
+        {isImageAvailable ? (
+          <img src={imageUrl} alt={character.name} className="character-image" />
+        ) : (
+          <div className="character-image-placeholder">
+            <span>?</span>
+          </div>
+        )}
+      </div>
       <div className="character-card-info">
         <h3>{character.name}</h3>
         <img
@@ -26,11 +27,6 @@ const CharacterCard = ({ character, isFavorite, onToggleFavorite }) => {
           alt="Favoritar"
           className="fav-icon"
           onClick={() => onToggleFavorite(character.id)}
-          style={{
-            width: '20px',
-            height: '20px',
-            objectFit: 'contain'
-          }}
         />
       </div>
     </div>
