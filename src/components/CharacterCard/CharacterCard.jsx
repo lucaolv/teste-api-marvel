@@ -1,9 +1,9 @@
 import React from 'react'
 import iconHeartFilled from '../../assets/icones/heart/Path Copy 7@1,5x.png'
 import iconHeartOutline from '../../assets/icones/heart/Path Copy 2.png'
+import './CharacterCard.css'
 
 const CharacterCard = ({ character, isFavorite, onToggleFavorite }) => {
-
   const { path, extension } = character.thumbnail
   const securePath = path.replace('http://', 'https://')
   const imageUrl = `${securePath}.${extension}`
@@ -21,7 +21,9 @@ const CharacterCard = ({ character, isFavorite, onToggleFavorite }) => {
         )}
       </div>
       <div className="character-card-info">
-        <h3>{character.name}</h3>
+        <h3 className="character-name" title={character.name}>
+          {character.name}
+        </h3>
         <img
           src={isFavorite ? iconHeartFilled : iconHeartOutline}
           alt="Favoritar"
