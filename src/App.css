@@ -1,42 +1,108 @@
-#root {
+/* Estilo principal da aplicação */
+.app-container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 2rem 2rem 2rem;
+  /* Remove padding do topo para o Header */
+}
+
+/* Estilos da Home Page */
+.home-page {
+  /* Você pode adicionar estilos específicos da home aqui */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-header {
   text-align: center;
+  margin-top: 2rem;
+  color: var(--cor-texto-medio);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.home-header h2 {
+  font-size: 1.75rem;
+  color: var(--cor-texto-escuro);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Estilos para a lista (grid) de personagens */
+.character-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* 4 colunas como no layout */
+  gap: 2rem 1.5rem;
+  margin-top: 2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Estilos para o Card (placeholder) */
+.character-card {
+  border: 1px solid #E0E0E0;
+  /* Um cinza suave */
+  border-radius: 4px;
+  overflow: hidden;
+  /* Garante que a imagem não vaze das bordas */
+  display: flex;
+  flex-direction: column;
+  background-color: #FAFAFA;
 }
 
-.card {
-  padding: 2em;
+/* Classe para a imagem real */
+.character-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  /* Garante a proporção quadrada */
+  object-fit: cover;
+  /* Faz a imagem cobrir a área sem distorcer */
+  background-color: #EEE;
+  /* Cor de fundo enquanto carrega */
 }
 
-.read-the-docs {
-  color: #888;
+/* Classe para o nosso placeholder '?' */
+.character-image-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--cor-fundo-card, #FDECEC);
+  /* */
+  color: var(--cor-texto-claro, #B9B9B9);
+  /* */
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.character-card-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-top: auto;
+  /* Empurra o nome/coração para a base do card */
+}
+
+.character-card-info h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--cor-texto-escuro);
+  /* Evita que nomes longos quebrem o layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fav-icon {
+  cursor: pointer;
+  width: 24px;
+  /* Tamanho fixo para o ícone */
+  height: 24px;
+}
+
+/* Placeholder para loading */
+.loading {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 4rem;
 }
