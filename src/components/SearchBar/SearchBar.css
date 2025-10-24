@@ -1,0 +1,46 @@
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  background-color: var(--cor-fundo-card, #FDECEC);
+  /* Cor de fundo rosa claro */
+  border-radius: 25px;
+  /* Bordas bem arredondadas */
+  padding: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  /* Ocupa a largura disponível */
+  max-width: 600px;
+  /* Limita a largura máxima */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* Sombra suave opcional */
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 1rem;
+  opacity: 0.6;
+  /* Deixa o ícone um pouco mais suave */
+}
+
+.search-input {
+  flex-grow: 1;
+  /* Faz o input ocupar o espaço restante */
+  border: none;
+  background-color: transparent;
+  /* Fundo transparente */
+  font-size: 1rem;
+  color: var(--cor-texto-medio, #8C8C8C);
+  /* Cor do texto do placeholder */
+  outline: none;
+  /* Remove a borda azul ao focar */
+  font-family: 'Work Sans', sans-serif;
+  /* Garante a fonte correta */
+}
+
+.search-input::placeholder {
+  color: var(--cor-texto-claro, #B9B9B9);
+  /* Cor do placeholder */
+  opacity: 1;
+  /* Garante que o placeholder seja visível */
+}
