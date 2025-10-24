@@ -1,13 +1,11 @@
 import React from 'react'
-import './SearchBar.css' // Vamos criar este arquivo CSS a seguir
-import lupaIcon from '../../assets/busca/Lupa/Shape.png' // Importa o ícone da lupa
+import './SearchBar.css'
+import lupaIcon from '../../assets/busca/Lupa/Shape.png'
 
-// Recebe a função onSearch do HomePage via props
 const SearchBar = ({ onSearch }) => {
 
-  // Função chamada sempre que o texto no input muda
   const handleChange = (event) => {
-    onSearch(event.target.value) // Chama a função onSearch (que é o setSearchTerm)
+    onSearch(event.target.value)
   }
 
   return (
@@ -15,9 +13,9 @@ const SearchBar = ({ onSearch }) => {
       <img src={lupaIcon} alt="Buscar" className="search-icon" />
       <input
         type="text"
-        placeholder="Procure por heróis" // Texto do layout
+        placeholder="Procure por heróis"
         className="search-input"
-        onChange={handleChange} // Chama handleChange a cada alteração
+        onChange={handleChange}
       />
     </div>
   )

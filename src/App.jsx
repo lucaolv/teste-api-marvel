@@ -1,14 +1,15 @@
+// src/App.jsx
 import HomePage from './pages/HomePage'
+import Footer from './components/Footer/Footer' // 1. Importe o Footer
 import './App.css'
 
 function App() {
   return (
-    <div className="app-container">
-      {/* Aqui é onde você configurará suas rotas (React Router)
-        quando tiver a página de Detalhes. 
-        Por enquanto, apenas renderizamos a Home.
-      */}
-      <HomePage />
+    <div className="app-layout"> {/* 2. Adicione este wrapper */}
+      <div className="app-container">
+        <HomePage />
+      </div>
+      <Footer /> {/* 3. Adicione o Footer fora do container */}
     </div>
   )
 }

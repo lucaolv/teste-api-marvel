@@ -1,11 +1,13 @@
 import React from 'react'
-import logo from '../../assets/logo/Group@1,5x.svg'
+import './Header.css'
+import marvelLogo from '../../assets/logo/Group@1,5x.svg'
 
 const Header = () => {
   return (
-    <header>
-      <img src={logo} alt="Marvel Logo" />
+    <header className="app-header">
+      <img src={marvelLogo} alt="Marvel Logo" className="header-logo" />
     </header>
   )
 }
+
 export default Header

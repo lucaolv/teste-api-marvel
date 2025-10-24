@@ -1,29 +1,25 @@
 import { useState, useEffect } from 'react'
 import { getCharacters, searchCharacters } from '../services/marvelApi' //
 
-// Importe seus componentes (mesmo que ainda estejam vazios)
 import Header from '../components/Header/Header'
 import SearchBar from '../components/SearchBar/SearchBar'
 import FilterBar from '../components/FilterBar/FilterBar'
 import CharacterList from '../components/CharacterList/CharacterList'
 
 function HomePage() {
-  // Estados para dados e UI
   const [characters, setCharacters] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [totalFound, setTotalFound] = useState(0)
 
-  // Estados para filtros e favoritos
   const [searchTerm, setSearchTerm] = useState('')
-  const [orderBy, setOrderBy] = useState('name') // Requisito: Ordenar por nome
+  const [orderBy, setOrderBy] = useState('name')
   const [favorites, setFavorites] = useState(() => {
-    // Bônus: Pega favoritos do localStorage se existir
+    // Pega favoritos do localStorage se existir
     const savedFavs = localStorage.getItem('marvel_favorites')
     return savedFavs ? JSON.parse(savedFavs) : []
   })
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
 
-  // Efeito para buscar dados da API
   useEffect(() => {
     setIsLoading(true)
     const fetchApi = async () => {
@@ -44,18 +40,15 @@ function HomePage() {
       setIsLoading(false)
     }
 
-    // Debounce: Atraso para não chamar a API a cada tecla digitada
     const debounceFetch = setTimeout(fetchApi, 500)
-    return () => clearTimeout(debounceFetch) // Limpa o timeout
+    return () => clearTimeout(debounceFetch)
 
   }, [searchTerm, orderBy]) // Roda o efeito quando 'searchTerm' ou 'orderBy' mudam
 
-  // Efeito para salvar favoritos no localStorage (Bônus)
   useEffect(() => {
     localStorage.setItem('marvel_favorites', JSON.stringify(favorites))
   }, [favorites])
 
-  // Função para favoritar/desfavoritar
   const handleToggleFavorite = (characterId) => {
     setFavorites(prev => {
       const isFav = prev.includes(characterId)
@@ -68,13 +61,11 @@ function HomePage() {
         // Adiciona
         return [...prev, characterId]
       }
-      // Alerta se o limite for atingido
       alert('Você pode favoritar no máximo 5 personagens.')
       return prev
     })
   }
 
-  // Lógica para exibir apenas favoritos
   const displayedCharacters = showFavoritesOnly
     ? characters.filter(c => favorites.includes(c.id))
     : characters
