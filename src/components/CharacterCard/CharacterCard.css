@@ -1,4 +1,7 @@
 .character-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
   background: #FFFFFF;
   border-radius: 4px;
   overflow: hidden;
