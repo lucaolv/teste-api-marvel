@@ -41,7 +41,6 @@
   margin-top: 2rem;
   width: 100%;
   min-height: calc(100vh - 300px);
-  /* Ajustado para considerar header, título e filtros */
   align-content: flex-start;
 }
 
@@ -80,7 +79,6 @@
   }
 }
 
-/* Telas Pequenas */
 @media (max-width: 480px) {
   .app-container {
     padding: 0 1rem 1rem 1rem;
