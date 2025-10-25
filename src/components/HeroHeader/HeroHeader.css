@@ -2,5 +2,34 @@
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 1.5rem;
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+}
+
+.header-logo-link-hero {
+  display: inline-block;
+  line-height: 0;
+}
+
+.header-logo-hero {
+  height: 60px;
+  width: auto;
+}
+
+
+@media (max-width: 600px) {
+  .app-header-hero {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .search-wrapper-hero {
+    width: 100%;
+  }
+
+  .search-wrapper-hero>div {
+    margin: 0 auto;
+    max-width: 400px;
+  }
 }

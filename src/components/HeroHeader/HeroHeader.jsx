@@ -2,21 +2,27 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './HeroHeader.css';
 import marvelLogo from '../../assets/logo/Group.png';
-import SearchBar from '../SearchBar/SearchBar';
+import HeroSearch from '../HeroSearch/HeroSearch';
 
 const HeroHeader = () => {
   const navigate = useNavigate();
 
   const handleSearch = (query) => {
-    navigate(`/?search=${query}`);
+    if (query.trim()) {
+      navigate(`/?search=${encodeURIComponent(query.trim())}`);
+    } else {
+      navigate('/');
+    }
   };
 
   return (
     <header className="app-header-hero">
-      <Link to="/">
-        <img src={marvelLogo} alt="Marvel Logo" className="header-logo" />
+      <Link to="/" className="header-logo-link-hero">
+        <img src={marvelLogo} alt="Marvel Logo" className="header-logo-hero" />
       </Link>
-      <SearchBar onSearch={handleSearch} />
+      <div className="search-wrapper-hero">
+        <HeroSearch onSearch={handleSearch} />
+      </div>
     </header>
   );
 };
