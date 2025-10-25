@@ -1,23 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './SearchBar.css'
 import lupaIcon from '../../assets/busca/Lupa/Shape.png'
 
 const SearchBar = ({ onSearch }) => {
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const handleChange = (event) => {
-    onSearch(event.target.value)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSearch(searchTerm)
   }
 
   return (
-    <div className="search-bar-container">
-      <img src={lupaIcon} alt="Buscar" className="search-icon" />
+    <form className="search-bar-container" onSubmit={handleSubmit}>
+      <button type="submit" className="search-button">
+        <img src={lupaIcon} alt="Buscar" className="search-icon" />
+      </button>
       <input
         type="text"
         placeholder="Procure por heróis"
         className="search-input"
-        onChange={handleChange}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
-    </div>
+    </form>
   )
 }
 

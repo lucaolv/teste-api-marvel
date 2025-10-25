@@ -3,7 +3,7 @@ import CharacterCard from '../CharacterCard/CharacterCard' //
 
 const CharacterList = ({ characters, favorites, onToggleFavorite }) => {
   return (
-    <div className="character-list"> {/* */}
+    <div className="character-list">
       {characters.map(character => (
         <CharacterCard
           key={character.id}

@@ -56,7 +56,7 @@ export const getCharacterComics = async (id) => {
   try {
     const response = await marvelApi.get(`characters/${id}/comics`, {
       params: {
-        orderBy: '-onSaleDate', // Ordena pelos mais recentes primeiro
+        orderBy: '-onsaleDate', // Ordena pelos mais recentes primeiro
         limit: 10, // Limita a 10 resultados
       },
     })
