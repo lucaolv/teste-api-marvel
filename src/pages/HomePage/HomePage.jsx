@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { getCharacters, searchCharacters, getCharacterById } from '../../services/marvelApi' //
 
 import Header from '../../components/Header/Header'
@@ -14,6 +15,7 @@ function HomePage({ favorites, onToggleFavorite }) {
   const [isSortedAZ, setIsSortedAZ] = useState(false);
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchCharacters = async (search = '') => {
     if (showFavoritesOnly) return;
@@ -34,14 +36,21 @@ function HomePage({ favorites, onToggleFavorite }) {
     setIsLoading(false);
   };
 
-  // Carrega os personagens iniciais
+  // Carrega os personagens iniciais e lê parâmetros da URL
   useEffect(() => {
-    fetchCharacters();
-  }, [isSortedAZ, showFavoritesOnly]);
+    const searchQuery = searchParams.get('search');
+    if (searchQuery) {
+      setSearchTerm(searchQuery);
+      fetchCharacters(searchQuery);
+    } else {
+      fetchCharacters();
+    }
+  }, [isSortedAZ, showFavoritesOnly, searchParams]);
 
   // Handler para a busca
   const handleSearch = (term) => {
     setSearchTerm(term);
+    setSearchParams(term ? { search: term } : {});
     fetchCharacters(term);
   };
 

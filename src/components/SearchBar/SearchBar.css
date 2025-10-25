@@ -14,8 +14,6 @@
   width: 20px;
   height: 20px;
   margin-right: 1rem;
-  opacity: 0.6;
-  visibility: visible;
 }
 
 .search-input {
@@ -35,6 +33,6 @@
 
 .search-button {
   cursor: pointer;
-  background-color: transparent;
+  background-color: none;
   border: none;
 }

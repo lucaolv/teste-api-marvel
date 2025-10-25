@@ -10,11 +10,19 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.hero-search-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
 .hero-search-icon {
   width: 18px;
   height: 18px;
-  margin-right: 0.75rem;
-  opacity: 0.5;
+  margin-right: 1rem;
 }
 
 .hero-search-input {

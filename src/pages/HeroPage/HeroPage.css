@@ -21,6 +21,7 @@
 .hero-info-left {
   flex: 3;
   min-width: 0;
+  max-width: 450px;
 }
 
 .hero-image-right {
