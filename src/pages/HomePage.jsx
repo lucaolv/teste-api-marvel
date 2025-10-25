@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getCharacters, searchCharacters } from '../services/marvelApi' //
+import { getCharacters, searchCharacters, getCharacterById } from '../services/marvelApi' //
 
 import Header from '../components/Header/Header'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -19,18 +19,20 @@ function HomePage() {
     return savedFavs ? JSON.parse(savedFavs) : []
   })
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const [favoriteCharacters, setFavoriteCharacters] = useState([])
 
+  // Efeito para buscar personagens da API
   useEffect(() => {
+    if (showFavoritesOnly) return; // Não busca da API se estiver mostrando apenas favoritos
+
     setIsLoading(true)
     const fetchApi = async () => {
       try {
         let data
         if (searchTerm) {
-          // Requisito: Filtrar por nome
-          data = await searchCharacters(searchTerm, 0, 20) //
+          data = await searchCharacters(searchTerm, 0, 20)
         } else {
-          // Requisito: Exibir os 20 primeiros
-          data = await getCharacters(0, 20, orderBy) //
+          data = await getCharacters(0, 20, orderBy)
         }
         setCharacters(data.results)
         setTotalFound(data.total)
@@ -43,11 +45,35 @@ function HomePage() {
     const debounceFetch = setTimeout(fetchApi, 500)
     return () => clearTimeout(debounceFetch)
 
-  }, [searchTerm, orderBy]) // Roda o efeito quando 'searchTerm' ou 'orderBy' mudam
+  }, [searchTerm, orderBy, showFavoritesOnly])
 
   useEffect(() => {
     localStorage.setItem('marvel_favorites', JSON.stringify(favorites))
   }, [favorites])
+
+  // Efeito para carregar dados completos dos favoritos
+  useEffect(() => {
+    const loadFavoriteCharacters = async () => {
+      if (!showFavoritesOnly || favorites.length === 0) {
+        setFavoriteCharacters([])
+        return
+      }
+
+      setIsLoading(true)
+      try {
+        const promises = favorites.map(id => getCharacterById(id))
+        const results = await Promise.all(promises)
+        const validCharacters = results.filter(Boolean)
+        setFavoriteCharacters(validCharacters)
+      } catch (err) {
+        console.error('Erro ao carregar favoritos:', err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadFavoriteCharacters()
+  }, [showFavoritesOnly, favorites])
 
   const handleToggleFavorite = (characterId) => {
     setFavorites(prev => {
@@ -67,7 +93,7 @@ function HomePage() {
   }
 
   const displayedCharacters = showFavoritesOnly
-    ? characters.filter(c => favorites.includes(c.id))
+    ? favoriteCharacters
     : characters
 
   return (
