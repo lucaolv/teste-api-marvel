@@ -12,7 +12,7 @@ function HomePage() {
   const [totalFound, setTotalFound] = useState(0)
 
   const [searchTerm, setSearchTerm] = useState('')
-  const [orderBy, setOrderBy] = useState('name')
+  const [isSortedAZ, setIsSortedAZ] = useState(false)
   const [favorites, setFavorites] = useState(() => {
     // Pega favoritos do localStorage se existir
     const savedFavs = localStorage.getItem('marvel_favorites')
@@ -32,9 +32,17 @@ function HomePage() {
         if (searchTerm) {
           data = await searchCharacters(searchTerm, 0, 20)
         } else {
-          data = await getCharacters(0, 20, orderBy)
+          // Se o toggle estiver ativado, ordena por nome
+          data = await getCharacters(0, 20, isSortedAZ ? 'name' : null)
+          console.log('Personagens da API:',
+            data.results.map(char => ({
+              id: char.id,
+              name: char.name
+            }))
+          )
         }
-        setCharacters(data.results)
+        const results = data.results
+        setCharacters(results)
         setTotalFound(data.total)
       } catch (err) {
         console.error(err)
@@ -45,7 +53,7 @@ function HomePage() {
     const debounceFetch = setTimeout(fetchApi, 500)
     return () => clearTimeout(debounceFetch)
 
-  }, [searchTerm, orderBy, showFavoritesOnly])
+  }, [searchTerm, isSortedAZ, showFavoritesOnly])
 
   useEffect(() => {
     localStorage.setItem('marvel_favorites', JSON.stringify(favorites))
@@ -109,8 +117,8 @@ function HomePage() {
 
       <FilterBar
         total={showFavoritesOnly ? displayedCharacters.length : totalFound}
-        isSorted={orderBy === 'name'}
-        onSortToggle={() => setOrderBy(o => o === 'name' ? '-name' : 'name')}
+        isSorted={isSortedAZ}
+        onSortToggle={() => setIsSortedAZ(prev => !prev)}
         showFavorites={showFavoritesOnly}
         onFavoritesToggle={() => setShowFavoritesOnly(s => !s)}
       />

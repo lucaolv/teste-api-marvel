@@ -24,15 +24,17 @@ marvelApi.interceptors.request.use((config) => {
   return config
 })
 
-export const getCharacters = async (offset = 0, limit = 20, orderBy = 'name') => {
+export const getCharacters = async (offset = 0, limit = 20, orderBy = null) => {
   try {
-    const response = await marvelApi.get('characters', {
-      params: {
-        offset,
-        limit,
-        orderBy,
-      },
-    })
+    const params = {
+      offset,
+      limit,
+    }
+    // Só adiciona orderBy se for fornecido
+    if (orderBy) {
+      params.orderBy = orderBy
+    }
+    const response = await marvelApi.get('characters', { params })
     return response.data.data
   } catch (error) {
     console.error('Error fetching characters:', error)
