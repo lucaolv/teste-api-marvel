@@ -1,25 +1,19 @@
 import { useState, useEffect } from 'react'
-import { getCharacters, searchCharacters, getCharacterById } from '../services/marvelApi' //
+import { getCharacters, searchCharacters, getCharacterById } from '../../services/marvelApi' //
 
-import Header from '../components/Header/Header'
-import SearchBar from '../components/SearchBar/SearchBar'
-import FilterBar from '../components/FilterBar/FilterBar'
-import CharacterList from '../components/CharacterList/CharacterList'
+import Header from '../../components/Header/Header'
+import SearchBar from '../../components/SearchBar/SearchBar'
+import FilterBar from '../../components/FilterBar/FilterBar'
+import CharacterList from '../../components/CharacterList/CharacterList'
 
-function HomePage() {
-  const [characters, setCharacters] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [totalFound, setTotalFound] = useState(0)
-
-  const [searchTerm, setSearchTerm] = useState('')
-  const [isSortedAZ, setIsSortedAZ] = useState(false)
-  const [favorites, setFavorites] = useState(() => {
-    // Pega favoritos do localStorage se existir
-    const savedFavs = localStorage.getItem('marvel_favorites')
-    return savedFavs ? JSON.parse(savedFavs) : []
-  })
-  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
-  const [favoriteCharacters, setFavoriteCharacters] = useState([])
+function HomePage({ favorites, onToggleFavorite }) {
+  const [characters, setCharacters] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [totalFound, setTotalFound] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isSortedAZ, setIsSortedAZ] = useState(false);
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [favoriteCharacters, setFavoriteCharacters] = useState([]);
 
   // Efeito para buscar personagens da API
   useEffect(() => {
@@ -55,9 +49,6 @@ function HomePage() {
 
   }, [searchTerm, isSortedAZ, showFavoritesOnly])
 
-  useEffect(() => {
-    localStorage.setItem('marvel_favorites', JSON.stringify(favorites))
-  }, [favorites])
 
   // Efeito para carregar dados completos dos favoritos
   useEffect(() => {
@@ -83,22 +74,6 @@ function HomePage() {
     loadFavoriteCharacters()
   }, [showFavoritesOnly, favorites])
 
-  const handleToggleFavorite = (characterId) => {
-    setFavorites(prev => {
-      const isFav = prev.includes(characterId)
-      if (isFav) {
-        // Remove
-        return prev.filter(id => id !== characterId)
-      }
-      // Requisito: Limite de 5 favoritos
-      if (prev.length < 5) {
-        // Adiciona
-        return [...prev, characterId]
-      }
-      alert('Você pode favoritar no máximo 5 personagens.')
-      return prev
-    })
-  }
 
   const displayedCharacters = showFavoritesOnly
     ? favoriteCharacters
@@ -129,7 +104,7 @@ function HomePage() {
         <CharacterList
           characters={displayedCharacters}
           favorites={favorites}
-          onToggleFavorite={handleToggleFavorite}
+          onToggleFavorite={onToggleFavorite}
         />
       )}
     </div>
