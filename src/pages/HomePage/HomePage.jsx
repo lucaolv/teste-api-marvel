@@ -15,39 +15,35 @@ function HomePage({ favorites, onToggleFavorite }) {
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
 
-  // Efeito para buscar personagens da API
-  useEffect(() => {
-    if (showFavoritesOnly) return; // Não busca da API se estiver mostrando apenas favoritos
+  const fetchCharacters = async (search = '') => {
+    if (showFavoritesOnly) return;
 
-    setIsLoading(true)
-    const fetchApi = async () => {
-      try {
-        let data
-        if (searchTerm) {
-          data = await searchCharacters(searchTerm, 0, 20)
-        } else {
-          // Se o toggle estiver ativado, ordena por nome
-          data = await getCharacters(0, 20, isSortedAZ ? 'name' : null)
-          console.log('Personagens da API:',
-            data.results.map(char => ({
-              id: char.id,
-              name: char.name
-            }))
-          )
-        }
-        const results = data.results
-        setCharacters(results)
-        setTotalFound(data.total)
-      } catch (err) {
-        console.error(err)
+    setIsLoading(true);
+    try {
+      let data;
+      if (search) {
+        data = await searchCharacters(search, 0, 20);
+      } else {
+        data = await getCharacters(0, 20, isSortedAZ ? 'name' : null);
       }
-      setIsLoading(false)
+      setCharacters(data.results);
+      setTotalFound(data.total);
+    } catch (err) {
+      console.error(err);
     }
+    setIsLoading(false);
+  };
 
-    const debounceFetch = setTimeout(fetchApi, 500)
-    return () => clearTimeout(debounceFetch)
+  // Carrega os personagens iniciais
+  useEffect(() => {
+    fetchCharacters();
+  }, [isSortedAZ, showFavoritesOnly]);
 
-  }, [searchTerm, isSortedAZ, showFavoritesOnly])
+  // Handler para a busca
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    fetchCharacters(term);
+  };
 
 
   // Efeito para carregar dados completos dos favoritos
@@ -88,7 +84,7 @@ function HomePage({ favorites, onToggleFavorite }) {
         <p>Mergulhe no domínio deslumbrante de todos os personagens clássicos que você ama - e aqueles que você descobrirá em breve!</p>
       </div>
 
-      <SearchBar onSearch={setSearchTerm} />
+      <SearchBar onSearch={handleSearch} />
 
       <FilterBar
         total={showFavoritesOnly ? displayedCharacters.length : totalFound}

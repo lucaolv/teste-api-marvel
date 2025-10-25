@@ -15,6 +15,7 @@
   height: 20px;
   margin-right: 1rem;
   opacity: 0.6;
+  visibility: visible;
 }
 
 .search-input {
@@ -30,4 +31,10 @@
 .search-input::placeholder {
   color: var(--cor-texto-claro, #B9B9B9);
   opacity: 1;
+}
+
+.search-button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
 }
