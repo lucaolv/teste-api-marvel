@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { getCharacters, searchCharacters, getCharacterById } from '../../services/marvelApi' //
+import { getCharacters, searchCharacters, getCharacterById } from '../../services/marvelApi'
 
 import Header from '../../components/Header/Header'
 import SearchBar from '../../components/SearchBar/SearchBar'
 import FilterBar from '../../components/FilterBar/FilterBar'
 import CharacterList from '../../components/CharacterList/CharacterList'
+import Pagination from '../../components/Pagination/Pagination'
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner'
+
+
+const PAGE_LIMIT = 20;
 
 function HomePage({ favorites, onToggleFavorite }) {
   const [characters, setCharacters] = useState([]);
@@ -17,16 +22,20 @@ function HomePage({ favorites, onToggleFavorite }) {
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   const fetchCharacters = async (search = '') => {
     if (showFavoritesOnly) return;
 
     setIsLoading(true);
     try {
       let data;
+      const offset = (currentPage - 1) * PAGE_LIMIT;
+
       if (search) {
-        data = await searchCharacters(search, 0, 20);
+        data = await searchCharacters(search, offset, PAGE_LIMIT);
       } else {
-        data = await getCharacters(0, 20, isSortedAZ ? 'name' : null);
+        data = await getCharacters(offset, PAGE_LIMIT, isSortedAZ ? 'name' : null);
       }
       setCharacters(data.results);
       setTotalFound(data.total);
@@ -45,13 +54,26 @@ function HomePage({ favorites, onToggleFavorite }) {
     } else {
       fetchCharacters();
     }
-  }, [isSortedAZ, showFavoritesOnly, searchParams]);
+    // Adicionar currentPage como dependência do useEffect
+  }, [isSortedAZ, showFavoritesOnly, searchParams, currentPage]);
 
   // Handler para a busca
   const handleSearch = (term) => {
     setSearchTerm(term);
     setSearchParams(term ? { search: term } : {});
+    setCurrentPage(1);
     fetchCharacters(term);
+  };
+
+  // Resetar para a página 1 ao mudar filtros
+  const handleSortToggle = () => {
+    setCurrentPage(1);
+    setIsSortedAZ(prev => !prev);
+  };
+
+  const handleFavoritesToggle = () => {
+    setCurrentPage(1);
+    setShowFavoritesOnly(s => !s);
   };
 
 
@@ -84,6 +106,8 @@ function HomePage({ favorites, onToggleFavorite }) {
     ? favoriteCharacters
     : characters
 
+  const totalPages = Math.ceil(totalFound / PAGE_LIMIT);
+
   return (
     <div className="home-page">
       <Header />
@@ -98,18 +122,26 @@ function HomePage({ favorites, onToggleFavorite }) {
       <FilterBar
         total={showFavoritesOnly ? displayedCharacters.length : totalFound}
         isSorted={isSortedAZ}
-        onSortToggle={() => setIsSortedAZ(prev => !prev)}
+        onSortToggle={handleSortToggle}
         showFavorites={showFavoritesOnly}
-        onFavoritesToggle={() => setShowFavoritesOnly(s => !s)}
+        onFavoritesToggle={handleFavoritesToggle}
       />
 
       {isLoading ? (
-        <div className="loading">Carregando heróis...</div>
+        <LoadingSpinner />
       ) : (
         <CharacterList
           characters={displayedCharacters}
           favorites={favorites}
           onToggleFavorite={onToggleFavorite}
+        />
+      )}
+
+      {!isLoading && !showFavoritesOnly && totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
         />
       )}
     </div>
