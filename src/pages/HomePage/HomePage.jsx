@@ -6,9 +6,11 @@ import Header from '../../components/Header/Header'
 import SearchBar from '../../components/SearchBar/SearchBar'
 import FilterBar from '../../components/FilterBar/FilterBar'
 import CharacterList from '../../components/CharacterList/CharacterList'
-import Pagination from '../../components/Pagination/Pagination' // 1. Importar o novo componente
+import Pagination from '../../components/Pagination/Pagination'
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner'
 
-const PAGE_LIMIT = 20; // 2. Definir o limite de itens por página
+
+const PAGE_LIMIT = 20;
 
 function HomePage({ favorites, onToggleFavorite }) {
   const [characters, setCharacters] = useState([]);
@@ -20,7 +22,6 @@ function HomePage({ favorites, onToggleFavorite }) {
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // 3. Adicionar estado para a página atual
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchCharacters = async (search = '') => {
@@ -29,14 +30,11 @@ function HomePage({ favorites, onToggleFavorite }) {
     setIsLoading(true);
     try {
       let data;
-      // 4. Calcular o offset com base na página atual
       const offset = (currentPage - 1) * PAGE_LIMIT;
 
       if (search) {
-        // 5. Passar offset e limit para a busca
         data = await searchCharacters(search, offset, PAGE_LIMIT);
       } else {
-        // 6. Passar offset e limit para a listagem geral
         data = await getCharacters(offset, PAGE_LIMIT, isSortedAZ ? 'name' : null);
       }
       setCharacters(data.results);
@@ -56,19 +54,18 @@ function HomePage({ favorites, onToggleFavorite }) {
     } else {
       fetchCharacters();
     }
-    // 7. Adicionar currentPage como dependência do useEffect
+    // Adicionar currentPage como dependência do useEffect
   }, [isSortedAZ, showFavoritesOnly, searchParams, currentPage]);
 
   // Handler para a busca
   const handleSearch = (term) => {
     setSearchTerm(term);
     setSearchParams(term ? { search: term } : {});
-    // 8. Resetar para a página 1 em toda nova busca
     setCurrentPage(1);
     fetchCharacters(term);
   };
 
-  // 9. Resetar para a página 1 ao mudar filtros
+  // Resetar para a página 1 ao mudar filtros
   const handleSortToggle = () => {
     setCurrentPage(1);
     setIsSortedAZ(prev => !prev);
@@ -87,8 +84,6 @@ function HomePage({ favorites, onToggleFavorite }) {
         setFavoriteCharacters([])
         return
       }
-
-      // ... (lógica de carregar favoritos existente) ...
 
       setIsLoading(true)
       try {
@@ -111,7 +106,6 @@ function HomePage({ favorites, onToggleFavorite }) {
     ? favoriteCharacters
     : characters
 
-  // 10. Calcular o total de páginas
   const totalPages = Math.ceil(totalFound / PAGE_LIMIT);
 
   return (
@@ -128,13 +122,13 @@ function HomePage({ favorites, onToggleFavorite }) {
       <FilterBar
         total={showFavoritesOnly ? displayedCharacters.length : totalFound}
         isSorted={isSortedAZ}
-        onSortToggle={handleSortToggle} // Atualizado
+        onSortToggle={handleSortToggle}
         showFavorites={showFavoritesOnly}
-        onFavoritesToggle={handleFavoritesToggle} // Atualizado
+        onFavoritesToggle={handleFavoritesToggle}
       />
 
       {isLoading ? (
-        <div className="loading">Carregando heróis...</div>
+        <LoadingSpinner />
       ) : (
         <CharacterList
           characters={displayedCharacters}
@@ -143,7 +137,6 @@ function HomePage({ favorites, onToggleFavorite }) {
         />
       )}
 
-      {/* 11. Renderizar a paginação */}
       {!isLoading && !showFavoritesOnly && totalPages > 1 && (
         <Pagination
           currentPage={currentPage}

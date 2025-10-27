@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getCharacterById, getCharacterComics } from '../../services/marvelApi';
 import HeroHeader from '../../components/HeroHeader/HeroHeader';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 import './HeroPage.css';
 
@@ -52,7 +53,7 @@ function HeroPage({ favorites, onToggleFavorite }) {
   }, [heroId]);
 
 
-  if (isLoading) return <div>Carregando...</div>;
+  if (isLoading) return <LoadingSpinner />
   if (error) return <div>{error}</div>;
   if (!hero) return <div>Herói não encontrado.</div>;
 
