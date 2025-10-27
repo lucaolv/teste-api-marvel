@@ -1,3 +1,69 @@
+## 🚀 Guia de Instalação e Execução
+
+Para rodar e avaliar este projeto localmente, siga os passos abaixo.
+
+### Pré-requisitos
+* **Node.js**: (v20 ou superior, conforme requisitos do Vite)
+* **npm** (geralmente instalado com o Node.js)
+* **Chaves da API da Marvel**: Você precisará das suas chaves (Pública e Privada) do [portal de desenvolvedores da Marvel](https://developer.marvel.com/).
+
+### 1. Instalação
+
+Primeiro, clone o repositório e instale as dependências.
+
+```bash
+# Clone o repositório
+git clone <url-do-seu-repositorio>
+cd <nome-do-repositorio>
+
+# Instale as dependências
+npm install
+```
+
+2. Configuração (API da Marvel)
+Para que a aplicação se conecte à API da Marvel, você precisa fornecer suas chaves. O projeto está configurado para ler variáveis de ambiente.
+
+Crie um arquivo chamado .env na raiz do projeto (no mesmo nível do package.json).
+
+Adicione o seguinte conteúdo a ele, substituindo pelos seus valores:
+```bash
+VITE_APP_MARVEL_PUBLIC_KEY=sua_chave_publica_aqui
+VITE_APP_MARVEL_PRIVATE_KEY=sua_chave_privada_aqui
+```
+
+3. Executando a Aplicação (Modo de Desenvolvimento)
+Com tudo instalado e configurado, inicie o servidor de desenvolvimento do Vite:
+
+```bash
+npm run dev
+```
+A aplicação estará disponível em http://localhost:5173 (ou em outra porta, se esta estiver em uso).
+
+4. Testando o Código
+O projeto possui duas formas de teste, conforme solicitado no bônus:
+
+A. Lint (Qualidade de Código)
+Para verificar erros de padrão de código e boas práticas, rode o ESLint:
+```bash
+npm run lint
+```
+
+B. Testes End-to-End (e2e com Playwright)
+Os testes e2e simulam o comportamento real do usuário (busca, clique, favoritar) usando mocking da API.
+
+```bash
+# 1. Instale os navegadores para o Playwright (só precisa na primeira vez)
+npx playwright install
+
+# 2. Rode os testes e2e
+npx playwright test
+
+# 3. (Opcional) Veja o relatório detalhado dos testes
+npx playwright show-report
+```
+
+---
+
 # Frontend Challenge
 
 ### Objetivo
