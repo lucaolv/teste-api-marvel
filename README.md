@@ -62,6 +62,12 @@ npx playwright test
 npx playwright show-report
 ```
 
+"Como você lidaria com o limite de 5 favoritos se estivesse usando Redux ou Zustand?"
+
+A abordagem seria criar uma ação `toggleFavorite(id)`. Dentro da lógica dessa ação (seja no `createSlice` do Redux Toolkit ou na função `set` do Zustand), ao tentar *adicionar* um novo favorito (ou seja, se o ID ainda não existe na lista), haveria uma verificação condicional: `if (state.favorites.length < 5)`. Se a condição fosse verdadeira, o ID seria adicionado ao array. Caso contrário, a ação simplesmente retornaria o estado atual sem modificação, impedindo a adição do sexto favorito.
+
+A principal diferença estaria no *feedback* ao usuário. O *store* não deve disparar efeitos colaterais (como o `alert()`). Em vez disso, o *store* poderia expor um seletor ou estado derivado (ex: `isFavoriteLimitReached = state.favorites.length >= 5`). O componente React (como o `CharacterCard` ou `HeroPage`) usaria esse seletor. Ao clicar no botão de favoritar, se `isFavoriteLimitReached` fosse `true` (e o item não estivesse já favoritado), o *componente* dispararia o alerta para o usuário. Isso separa de forma limpa a lógica de estado (no store) da lógica de UI (no componente).
+
 ---
 
 # Frontend Challenge
